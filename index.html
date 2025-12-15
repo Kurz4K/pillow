@@ -13,7 +13,7 @@
         :root {
             --neon-blue: #00f2ff;
             --deep-blue: #0051ff;
-            --glass-surface: rgba(12, 20, 40, 0.6);
+            --glass-surface: rgba(12, 20, 40, 0.65);
             --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
             --text-muted: #8da4c4;
@@ -36,7 +36,7 @@
             justify-content: center;
             color: var(--text-main);
             
-            /* Modern Mesh Gradient Background */
+            /* Background: Deep Void with Mesh Gradients */
             background-color: #000000;
             background-image: 
                 radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
@@ -46,7 +46,7 @@
             animation: gradient-move 15s ease infinite;
         }
 
-        /* Moving "Orbs" for Liquid feel */
+        /* Ambient Floating Orbs */
         body::before, body::after {
             content: '';
             position: absolute;
@@ -56,9 +56,10 @@
             background: radial-gradient(circle, rgba(0, 81, 255, 0.3) 0%, rgba(0,0,0,0) 70%);
             z-index: -1;
             animation: float 10s infinite ease-in-out;
+            pointer-events: none;
         }
         body::after {
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.2) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
             animation-delay: -5s;
             right: -20%;
             bottom: -20%;
@@ -78,9 +79,9 @@
         .container {
             position: relative;
             width: 90%;
-            max-width: 460px; /* Wider on PC */
+            max-width: 460px;
             
-            /* Super Glass Effect */
+            /* Glass Card Styling */
             background: var(--glass-surface);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -88,19 +89,18 @@
             border-radius: 30px;
             padding: 2.5rem 2rem;
             
-            /* Glow shadow */
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.05),
                 0 20px 50px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(0, 81, 255, 0.2);
+                0 0 80px rgba(0, 81, 255, 0.15);
                 
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.2rem; /* Adjusted gap for new button */
         }
 
-        /* Header Area */
+        /* Header */
         .server-icon {
             font-size: 3rem;
             color: var(--neon-blue);
@@ -131,7 +131,7 @@
             text-transform: uppercase;
         }
 
-        /* Inputs Area */
+        /* Inputs */
         .grid-row {
             display: flex;
             gap: 1rem;
@@ -171,7 +171,7 @@
         }
 
         .value {
-            font-family: 'Outfit', monospace; /* Modern geometric monospace */
+            font-family: 'Outfit', monospace;
             font-size: 1.25rem;
             font-weight: 600;
             color: white;
@@ -187,29 +187,45 @@
             opacity: 0.5;
         }
 
-        /* Action Button */
-        .btn-main {
-            background: linear-gradient(135deg, var(--deep-blue), var(--neon-blue));
+        /* Buttons Wrapper */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Shared Button Styles */
+        .btn {
             border: none;
             width: 100%;
             padding: 1.2rem;
             border-radius: 18px;
-            color: #fff;
             font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 1.2rem;
             text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 81, 255, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        /* Shine effect on button */
+        /* Primary "Join" Button */
+        .btn-main {
+            background: linear-gradient(135deg, var(--deep-blue), var(--neon-blue));
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(0, 81, 255, 0.4);
+        }
+        
+        .btn-main:hover {
+            box-shadow: 0 15px 40px rgba(0, 81, 255, 0.6);
+        }
+
         .btn-main::before {
             content: '';
             position: absolute;
@@ -220,12 +236,25 @@
         }
         .btn-main:hover::before { left: 100%; }
 
-        .btn-main:active {
-            transform: scale(0.98);
-            box-shadow: 0 5px 15px rgba(0, 81, 255, 0.3);
+        /* Secondary "Map" Button */
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
-        /* Footer / Instructions */
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--neon-blue);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer */
         .footer {
             font-size: 0.9rem;
             color: var(--text-muted);
@@ -237,7 +266,7 @@
         }
         .footer strong { color: #fff; }
 
-        /* Toast Popup */
+        /* Toast */
         .toast {
             position: absolute;
             top: 15px;
@@ -274,7 +303,7 @@
 <body>
 
     <div class="container">
-        <!-- Success Toast -->
+        <!-- Toast Notification -->
         <div id="toast" class="toast"><i class="fas fa-check"></i> Copied!</div>
 
         <!-- Header -->
@@ -282,7 +311,7 @@
         <h1>PILLOW SMP</h1>
         <div class="badge">Java & Bedrock Ready</div>
 
-        <!-- Inputs -->
+        <!-- IP/Port Copy Boxes -->
         <div class="grid-row">
             <div class="copy-box box-large" onclick="copyToClipboard('pillow.rzx.world')">
                 <div class="label">Server IP</div>
@@ -297,25 +326,33 @@
             </div>
         </div>
 
-        <!-- Main Button -->
-        <a href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn-main">
-            <i class="fas fa-play"></i> OPEN MINECRAFT
-        </a>
+        <!-- Buttons Area -->
+        <div class="btn-group">
+            <!-- Join Button -->
+            <a href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn btn-main">
+                <i class="fas fa-play"></i> OPEN MINECRAFT
+            </a>
+            
+            <!-- Map Button (New) -->
+            <a href="https://map.rzx.world" target="_blank" class="btn btn-secondary">
+                <i class="fas fa-map-marked-alt"></i> WORLD MAP
+            </a>
+        </div>
 
-        <!-- Footer -->
+        <!-- Instructions -->
         <div class="footer">
             <div style="margin-bottom: 8px;">
-                <i class="fab fa-android"></i> <i class="fab fa-apple"></i> <strong>Bedrock:</strong> Tap the big blue button above. If it fails, copy the Port manually.
+                <i class="fab fa-android"></i> <i class="fab fa-apple"></i> <strong>Bedrock:</strong> Tap "Open Minecraft". If it fails, copy the Port manually.
             </div>
             <div>
-                <i class="fas fa-laptop"></i> <strong>Java:</strong> Copy the IP. You do not need the port.
+                <i class="fas fa-laptop"></i> <strong>Java:</strong> Copy the IP only.
             </div>
         </div>
     </div>
 
     <script>
         function copyToClipboard(text) {
-            // iOS 12 / Old Browser Fallback
+            // iOS 12 / Legacy Browser Fallback
             if (!navigator.clipboard) {
                 fallbackCopy(text);
                 return;
@@ -330,8 +367,10 @@
         function fallbackCopy(text) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            textArea.style.position = "fixed"; // Avoid scrolling to bottom
+            // Prevent scrolling to bottom on iOS
+            textArea.style.position = "fixed"; 
             textArea.style.left = "-9999px";
+            textArea.style.top = "0";
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
@@ -349,7 +388,6 @@
             const toast = document.getElementById("toast");
             toast.classList.add("visible");
             
-            // Haptic feedback if available (Android/modern iOS)
             if (window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(50);
             }
@@ -360,4 +398,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
