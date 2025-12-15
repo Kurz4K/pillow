@@ -4,37 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Pillow SMP</title>
+    <!-- Importing a modern font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
-            --primary: #43b581; /* Discord/Gaming Green */
-            --primary-hover: #3ca374;
-            --bg-overlay: rgba(0, 0, 0, 0.7);
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --text-color: #ffffff;
+            --primary-blue: #00d2ff;
+            --secondary-blue: #3a7bd5;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-white: #ffffff;
+            --field-bg: rgba(0, 0, 0, 0.3);
         }
 
         body {
             margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('https://assets.gcore.pro/blog_container/2020/08/minecraft-1-1.png'); /* Generic MC Background */
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.wallpapersden.com/image/download/minecraft-shaders-4k_bGdmaWyUmZqaraWkpJRmbmdlrWZlbWU.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-color);
+            color: var(--text-white);
             overflow: hidden;
         }
 
-        /* Dark Overlay */
+        /* Dark Blue Overlay */
         body::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--bg-overlay);
-            backdrop-filter: blur(8px); /* Modern blur effect */
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 10, 40, 0.85), rgba(0, 50, 100, 0.7));
+            z-index: -1;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #ccc;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: #00d2ff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Container for IP and Port */
+        .connection-details {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-box {
+            background: var(--field-bg);
+            border-radius: 12px;
+            padding: 10px;
+            flex: 1; /* split space evenly */
+            position: relative;
+            transition: border 0.3s;
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .detail-box:hover {
+            border: 1px solid var(--primary-blue);
+        }
+
+        .label {
+            font-size: 0.7rem;
+            color: #88aadd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .copy-icon {
+            font-size: 0.8rem;
+            color: #5577aa;
+            transition: color 0.3s;
+        }
+
+        .value:hover .copy-icon {
+            color: var(--primary-blue);
+        }
+
+        /* Buttons */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .btn-launch {
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            border: none;
+        }
+
+        .btn-launch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+        }
+
+        .instructions {
+            font-size: 0.8rem;
+            color: #aabbee;
+            line-height: 1.5;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .java-note {
+            margin-top: 10px;
+            display: block;
+            font-size: 0.75rem;
+            color: #8899aa;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-blue);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            top: 10px;
+            opacity: 1;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile adjustment */
+        @media (max-width: 400px) {
+            .connection-details {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <div class="toast" id="toast">Copied to clipboard!</div>
+        
+        <h1>PILLOW SMP</h1>
+        <div class="subtitle">Official Server Access</div>
+        
+        <div class="badge">
+            <i class="fas fa-check-circle"></i> Java & Bedrock Compatible
+        </div>
+
+        <!-- Separate IP and Port Boxes -->
+        <div class="connection-details">
+            <div class="detail-box" onclick="copyText('pillow.rzx.world')">
+                <span class="label">Server IP</span>
+                <div class="value">
+                    pillow.rzx.world <i class="far fa-copy copy-icon"></i>
+                </div>
+            </div>
+            
+            <div class="detail-box" onclick="copyText('26006')">
+                <span class="label">Port</span>
+                <div class="value">
+                    26006 <i class="far fa-copy copy-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bedrock Direct Link -->
+        <a href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn btn-launch">
+            <i class="fas fa-play"></i> Launch Minecraft (Bedrock)
+        </a>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <strong>Bedrock/PE:</strong> Click "Launch" or copy the IP & Port.<br>
+            <strong>Java Edition:</strong> Copy the IP above. The port is usually not needed, but use <em>IP:26006</em> if it fails.
+        </div>
+    </div>
+
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Copied: ${text}`);
+            }).catch(err => {
+                console.error('Failed to copy', err);
+                prompt("Copy manually:", text);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>            backdrop-filter: blur(8px); /* Modern blur effect */
             z-index: -1;
         }
 
