@@ -1,10 +1,205 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=minecraft://connect?ip=pillow.rzx.world&port=26006">
-  <title>Join Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Pillow SMP</title>
+    <style>
+        :root {
+            --primary: #43b581; /* Discord/Gaming Green */
+            --primary-hover: #3ca374;
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://assets.gcore.pro/blog_container/2020/08/minecraft-1-1.png'); /* Generic MC Background */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        /* Dark Overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(8px); /* Modern blur effect */
+            z-index: -1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        p {
+            color: #ccc;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .server-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .server-info:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            text-decoration: none;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(67, 181, 129, 0.4);
+            margin-bottom: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .status {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Copy Tooltip */
+        .tooltip {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-left: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip.visible {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
-  <p>If you are not redirected automatically, <a href="minecraft://connect?ip=pillow.rzx.world&port=26006">click here</a> to join the server.</p>
+
+    <div class="card">
+        <!-- Optional: Add a Server Logo Here -->
+        <!-- <img src="logo.png" style="width: 80px; margin-bottom: 1rem;"> -->
+        
+        <h1>Join Server</h1>
+        <p>Click below to open Minecraft automatically.</p>
+
+        <!-- Clickable IP Box -->
+        <div class="server-info" onclick="copyIp()" title="Click to Copy">
+            <span id="ip-text">pillow.rzx.world:26006</span>
+            <span class="tooltip" id="copy-msg">Copied!</span>
+        </div>
+
+        <!-- Main Connect Button -->
+        <a id="connect-link" href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn btn-primary">
+            Open Minecraft
+        </a>
+
+        <!-- Manual Copy Button (Fallback) -->
+        <button onclick="copyIp()" class="btn btn-secondary">
+            Copy IP Address
+        </button>
+
+        <div class="status" id="status-msg">Attempting to open...</div>
+    </div>
+
+    <script>
+        const serverIp = "pillow.rzx.world";
+        const serverPort = "26006";
+        const connectUrl = `minecraft://connect?ip=${serverIp}&port=${serverPort}`;
+
+        // 1. Attempt Auto-Redirect after a short delay (smoother UX)
+        window.onload = function() {
+            setTimeout(() => {
+                window.location.href = connectUrl;
+                document.getElementById('status-msg').innerText = "If nothing happened, click the button above.";
+            }, 1500);
+        };
+
+        // 2. Copy Functionality
+        function copyIp() {
+            const fullIp = `${serverIp}:${serverPort}`;
+            
+            navigator.clipboard.writeText(fullIp).then(() => {
+                // Show copied feedback
+                const tooltip = document.getElementById('copy-msg');
+                tooltip.classList.add('visible');
+                
+                // Reset text after 2 seconds
+                setTimeout(() => {
+                    tooltip.classList.remove('visible');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                prompt("Copy the IP manually:", fullIp);
+            });
+        }
+    </script>
 </body>
 </html>
