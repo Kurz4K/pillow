@@ -2,444 +2,280 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Join Pillow SMP</title>
-    <!-- Importing a modern font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* CSS Variables for Blue Theme */
         :root {
-            --primary-blue: #00d2ff;
-            --secondary-blue: #3a7bd5;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --primary-blue: #2196F3;
+            --dark-blue: #0D47A1;
             --text-white: #ffffff;
-            --field-bg: rgba(0, 0, 0, 0.3);
         }
 
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: url('https://images.wallpapersden.com/image/download/minecraft-shaders-4k_bGdmaWyUmZqaraWkpJRmbmdlrWZlbWU.jpg') no-repeat center center fixed;
-            background-size: cover;
+            padding: 0;
+            /* Native Apple Font stack for iOS optimization */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-white);
             overflow: hidden;
+            
+            /* Liquid Blue Gradient Background */
+            background: linear-gradient(-45deg, #051937, #004d7a, #008793, #00bf72);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
 
-        /* Dark Blue Overlay */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0, 10, 40, 0.85), rgba(0, 50, 100, 0.7));
-            z-index: -1;
+        /* The Liquid Animation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
+        .container {
             width: 90%;
-            max-width: 450px;
+            max-width: 400px;
+            /* Glass Effect */
+            background: var(--glass-bg);
+            /* Webkit backdrop filter for iOS Safari */
+            -webkit-backdrop-filter: blur(20px); 
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.8s ease-out;
+            color: var(--text-white);
         }
 
-        h1 {
-            margin: 0;
-            font-size: 2rem;
-            background: linear-gradient(to right, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        h2 {
+            margin-top: 0;
             font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .subtitle {
-            color: #ccc;
-            margin-top: 5px;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-        }
-
-        .badge {
-            background: rgba(0, 210, 255, 0.15);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            color: #00d2ff;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .status-badge {
             display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .status-badge i {
+            color: #4CAF50; /* Green dot */
+            margin-right: 5px;
+        }
+
+        /* Flex container for inputs */
+        .copy-group {
+            display: flex;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
-        /* Container for IP and Port */
-        .connection-details {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .detail-box {
-            background: var(--field-bg);
+        .input-wrapper {
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
-            padding: 10px;
-            flex: 1; /* split space evenly */
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
             position: relative;
-            transition: border 0.3s;
             border: 1px solid transparent;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
-        .detail-box:hover {
-            border: 1px solid var(--primary-blue);
+        .input-wrapper:active {
+            background: rgba(0, 0, 0, 0.4);
+            transform: scale(0.98);
         }
+
+        /* Layout specific: IP takes more space, Port takes less */
+        .box-ip { flex: 2; }
+        .box-port { flex: 1; }
 
         .label {
-            font-size: 0.7rem;
-            color: #88aadd;
+            display: block;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
             margin-bottom: 4px;
         }
 
         .value {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: "Courier New", monospace; /* Monospace for numbers */
+            word-break: break-all;
         }
 
-        .copy-icon {
-            font-size: 0.8rem;
-            color: #5577aa;
-            transition: color 0.3s;
+        .copy-hint {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-top: 2px;
         }
 
-        .value:hover .copy-icon {
-            color: var(--primary-blue);
-        }
-
-        /* Buttons */
-        .btn {
+        /* Big Action Button */
+        .btn-connect {
             display: block;
             width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-        }
-
-        .btn-launch {
-            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+            background: var(--primary-blue);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-            border: none;
+            text-decoration: none;
+            padding: 18px 0;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            transition: opacity 0.2s;
         }
 
-        .btn-launch:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+        .btn-connect:active {
+            opacity: 0.8;
+            transform: translateY(2px);
         }
 
-        .instructions {
-            font-size: 0.8rem;
-            color: #aabbee;
-            line-height: 1.5;
+        .info-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: rgba(255,255,255,0.8);
             background: rgba(255,255,255,0.05);
             padding: 15px;
             border-radius: 10px;
+            text-align: left;
         }
 
-        .java-note {
-            margin-top: 10px;
-            display: block;
-            font-size: 0.75rem;
-            color: #8899aa;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: absolute;
-            top: -40px;
+        /* Toast Popup */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1;
             left: 50%;
+            bottom: 30px;
             transform: translateX(-50%);
-            background: var(--primary-blue);
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 0.9rem;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s;
         }
-        
-        .toast.show {
-            top: 10px;
+
+        #toast.show {
+            visibility: visible;
             opacity: 1;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile adjustment */
-        @media (max-width: 400px) {
-            .connection-details {
+        /* Responsive Tweaks for small phones */
+        @media screen and (max-width: 340px) {
+            .copy-group {
                 flex-direction: column;
-                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-card">
-        <div class="toast" id="toast">Copied to clipboard!</div>
+    <div class="container">
+        <h2>Pillow SMP</h2>
         
-        <h1>PILLOW SMP</h1>
-        <div class="subtitle">Official Server Access</div>
-        
-        <div class="badge">
-            <i class="fas fa-check-circle"></i> Java & Bedrock Compatible
+        <div class="status-badge">
+            <i class="fas fa-wifi"></i> Java & Bedrock Ready
         </div>
 
-        <!-- Separate IP and Port Boxes -->
-        <div class="connection-details">
-            <div class="detail-box" onclick="copyText('pillow.rzx.world')">
-                <span class="label">Server IP</span>
-                <div class="value">
-                    pillow.rzx.world <i class="far fa-copy copy-icon"></i>
-                </div>
+        <div class="copy-group">
+            <!-- IP Box -->
+            <div class="input-wrapper box-ip" onclick="copyToClipboard('pillow.rzx.world')">
+                <span class="label">Server Address (IP)</span>
+                <div class="value">pillow.rzx.world</div>
+                <div class="copy-hint"><i class="far fa-copy"></i> Tap to copy</div>
             </div>
-            
-            <div class="detail-box" onclick="copyText('26006')">
+
+            <!-- Port Box -->
+            <div class="input-wrapper box-port" onclick="copyToClipboard('26006')">
                 <span class="label">Port</span>
-                <div class="value">
-                    26006 <i class="far fa-copy copy-icon"></i>
-                </div>
+                <div class="value">26006</div>
+                <div class="copy-hint"><i class="far fa-copy"></i> Copy</div>
             </div>
         </div>
 
-        <!-- Bedrock Direct Link -->
-        <a href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn btn-launch">
-            <i class="fas fa-play"></i> Launch Minecraft (Bedrock)
+        <!-- Bedrock Button -->
+        <a href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn-connect">
+            Open in Minecraft
         </a>
 
-        <!-- Instructions -->
-        <div class="instructions">
-            <strong>Bedrock/PE:</strong> Click "Launch" or copy the IP & Port.<br>
-            <strong>Java Edition:</strong> Copy the IP above. The port is usually not needed, but use <em>IP:26006</em> if it fails.
+        <!-- Footer Info -->
+        <div class="info-text">
+            <strong>Bedrock:</strong> Use the button above or copy the Port. <br><br>
+            <strong>Java:</strong> Copy the IP only. <br>
+            <span style="font-size:0.75rem; opacity:0.7">(Port is not needed for Java)</span>
         </div>
     </div>
 
+    <div id="toast">Copied!</div>
+
     <script>
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`Copied: ${text}`);
-            }).catch(err => {
-                console.error('Failed to copy', err);
-                prompt("Copy manually:", text);
+        function copyToClipboard(text) {
+            // iOS 12 Friendly "Old School" Copy Method
+            if (!navigator.clipboard) {
+                fallbackCopyTextToClipboard(text);
+                return;
+            }
+            
+            // Modern Method
+            navigator.clipboard.writeText(text).then(function() {
+                showToast("Copied: " + text);
+            }, function(err) {
+                // If modern fails, try fallback
+                fallbackCopyTextToClipboard(text);
             });
+        }
+
+        // Fallback for older iOS / iPad Gen 1 / iOS 12
+        function fallbackCopyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'Copied: ' + text : 'Failed to copy';
+                showToast(msg);
+            } catch (err) {
+                prompt("Copy this text manually:", text);
+            }
+
+            document.body.removeChild(textArea);
         }
 
         function showToast(message) {
-            const toast = document.getElementById('toast');
+            var toast = document.getElementById("toast");
             toast.innerText = message;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-    </script>
-</body>
-</html>            backdrop-filter: blur(8px); /* Modern blur effect */
-            z-index: -1;
-        }
-
-        .card {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        h1 {
-            margin-top: 0;
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        p {
-            color: #ccc;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .server-info {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 1.1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .server-info:hover {
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 15px 0;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            text-decoration: none;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(67, 181, 129, 0.4);
-            margin-bottom: 15px;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .status {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Copy Tooltip */
-        .tooltip {
-            font-size: 0.8rem;
-            color: var(--primary);
-            margin-left: 5px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .tooltip.visible {
-            opacity: 1;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <!-- Optional: Add a Server Logo Here -->
-        <!-- <img src="logo.png" style="width: 80px; margin-bottom: 1rem;"> -->
-        
-        <h1>Join Server</h1>
-        <p>Click below to open Minecraft automatically.</p>
-
-        <!-- Clickable IP Box -->
-        <div class="server-info" onclick="copyIp()" title="Click to Copy">
-            <span id="ip-text">pillow.rzx.world:26006</span>
-            <span class="tooltip" id="copy-msg">Copied!</span>
-        </div>
-
-        <!-- Main Connect Button -->
-        <a id="connect-link" href="minecraft://connect?ip=pillow.rzx.world&port=26006" class="btn btn-primary">
-            Open Minecraft
-        </a>
-
-        <!-- Manual Copy Button (Fallback) -->
-        <button onclick="copyIp()" class="btn btn-secondary">
-            Copy IP Address
-        </button>
-
-        <div class="status" id="status-msg">Attempting to open...</div>
-    </div>
-
-    <script>
-        const serverIp = "pillow.rzx.world";
-        const serverPort = "26006";
-        const connectUrl = `minecraft://connect?ip=${serverIp}&port=${serverPort}`;
-
-        // 1. Attempt Auto-Redirect after a short delay (smoother UX)
-        window.onload = function() {
-            setTimeout(() => {
-                window.location.href = connectUrl;
-                document.getElementById('status-msg').innerText = "If nothing happened, click the button above.";
-            }, 1500);
-        };
-
-        // 2. Copy Functionality
-        function copyIp() {
-            const fullIp = `${serverIp}:${serverPort}`;
-            
-            navigator.clipboard.writeText(fullIp).then(() => {
-                // Show copied feedback
-                const tooltip = document.getElementById('copy-msg');
-                tooltip.classList.add('visible');
-                
-                // Reset text after 2 seconds
-                setTimeout(() => {
-                    tooltip.classList.remove('visible');
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                prompt("Copy the IP manually:", fullIp);
-            });
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 2500);
         }
     </script>
 </body>
