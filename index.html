@@ -15,7 +15,6 @@
     <meta property="og:title" content="Join Pillow SMP">
     <meta property="og:description" content="Java & Bedrock Compatible. Click to automatically add server to list.">
     <meta property="og:url" content="https://pillow.rzx.world">
-    <!-- REPLACE THE LINK BELOW WITH YOUR SERVER LOGO URL -->
     <meta property="og:image" content="https://assets.gcore.pro/blog_container/2020/08/minecraft-1-1.png">
 
     <meta name="twitter:card" content="summary_large_image">
@@ -40,6 +39,10 @@
             --text-white: #ffffff;
             --text-gray: #94a3b8;
             --text-blue: #38bdf8;
+            
+            /* Social Colors */
+            --discord-color: #5865F2;
+            --messenger-color: #00B2FF;
         }
 
         * {
@@ -55,7 +58,7 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            position: fixed; /* Locks screen for iPad/Mobile */
+            position: fixed; 
             top: 0; left: 0; right: 0; bottom: 0;
             overflow: hidden;
             
@@ -63,7 +66,6 @@
             align-items: center;
             justify-content: center;
 
-            /* Fallback & Gradient Background */
             background-color: #020617; 
             background-image: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
             color: var(--text-white);
@@ -73,19 +75,18 @@
             width: 90%;
             max-width: 480px;
             
-            /* Glass Card */
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 40px 30px;
+            padding: 35px 30px; /* Slightly reduced padding to fit new buttons */
             
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px; 
         }
 
         /* Header */
@@ -171,11 +172,11 @@
             gap: 5px;
         }
 
-        /* Button Group */
+        /* Main Buttons */
         .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
         }
 
@@ -183,13 +184,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            padding: 18px;
             border-radius: 16px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
             transition: transform 0.1s, opacity 0.2s;
             border: none;
             cursor: pointer;
@@ -203,6 +202,8 @@
         .btn-primary {
             background: var(--primary-gradient);
             color: white;
+            padding: 18px;
+            font-size: 1.1rem;
             box-shadow: 0 4px 20px rgba(0, 198, 255, 0.3);
         }
 
@@ -210,16 +211,52 @@
             background: var(--map-btn-bg);
             color: #bfdbfe;
             border: 1px solid var(--border-color);
+            padding: 16px;
+            font-size: 1rem;
         }
         
         .btn-map:hover {
             background: rgba(255, 255, 255, 0.12);
         }
 
+        /* Social Buttons Section */
+        .social-group {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn-social {
+            flex: 1; /* Makes them share width equally */
+            padding: 12px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-social:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-discord:hover { border-color: var(--discord-color); color: var(--discord-color); }
+        .btn-messenger:hover { border-color: var(--messenger-color); color: var(--messenger-color); }
+
+        .btn-discord i { color: var(--discord-color); }
+        .btn-messenger i { color: var(--messenger-color); }
+
+
         /* Footer */
         .footer {
             text-align: left;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-gray);
             background: rgba(0, 0, 0, 0.2);
             padding: 15px;
@@ -281,15 +318,24 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Main Buttons -->
         <div class="btn-group">
-            <!-- UPDATED LINK: addExternalServer -->
             <a href="minecraft://?addExternalServer=PillowSMP|pillow.rzx.world:26006" class="btn btn-primary">
                 <i class="fas fa-plus-circle"></i> Add Server & Open
             </a>
             
             <a href="http://map.rzx.world:26012" target="_blank" class="btn btn-map">
                 <i class="fas fa-map"></i> View World Map
+            </a>
+        </div>
+
+        <!-- Social Buttons (Smaller Row) -->
+        <div class="social-group">
+            <a href="https://discord.gg/SfgbVzfC8N" target="_blank" class="btn-social btn-discord">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+            <a href="https://m.me/j/AbaQGoiOXtZJm-C9/" target="_blank" class="btn-social btn-messenger">
+                <i class="fab fa-facebook-messenger"></i> Messenger
             </a>
         </div>
 
@@ -345,4 +391,4 @@
         }
     </script>
 </body>
-</html>
+                                      </html>
