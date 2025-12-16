@@ -1,60 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join Pillow SMP</title>
-<style>
-  body {
-    margin: 0; padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#00c6ff,#0072ff);
-    color: white;
-    flex-direction: column;
-    text-align: center;
-  }
-  h1 { margin-bottom: 20px; }
-  .btn {
-    display: inline-block;
-    padding: 20px 40px;
-    background: #fff;
-    color: #0072ff;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 16px;
-    text-decoration: none;
-    margin: 10px;
-  }
-  .btn:hover { opacity: 0.9; }
-  .info {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #f0f0f0;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- ========================================= -->
+    <!--       EMBED & SHARING SETTINGS            -->
+    <!-- ========================================= -->
+    <title>Join Pillow SMP</title>
+    <meta name="description" content="Click here to join Pillow SMP! Official Java & Bedrock IP and World Map.">
+    <meta name="theme-color" content="#00C6FF"> 
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Join Pillow SMP">
+    <meta property="og:description" content="Java & Bedrock Compatible. Click to automatically add server to list.">
+    <meta property="og:url" content="https://pillow.rzx.world">
+    <!-- REPLACE THE LINK BELOW WITH YOUR SERVER LOGO URL -->
+    <meta property="og:image" content="https://assets.gcore.pro/blog_container/2020/08/minecraft-1-1.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Join Pillow SMP">
+    <meta name="twitter:description" content="Click to automatically add server to list.">
+    <!-- ========================================= -->
+
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #00C6FF, #0072FF);
+            --map-btn-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --text-white: #ffffff;
+            --text-gray: #94a3b8;
+            --text-blue: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            position: fixed; /* Locks screen for iPad/Mobile */
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* Fallback & Gradient Background */
+            background-color: #020617; 
+            background-image: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
+            color: var(--text-white);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 480px;
+            
+            /* Glass Card */
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 30px;
+            
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #fff, #bfdbfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: var(--text-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 5px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-weight: 700;
+        }
+
+        /* Inputs Grid */
+        .grid-row {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .copy-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .copy-box:active {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-blue);
+            transform: scale(0.98);
+        }
+
+        .box-large { flex: 2; }
+        .box-small { flex: 1; }
+
+        .label {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+        }
+
+        .hint {
+            font-size: 0.65rem;
+            color: var(--text-blue);
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Button Group */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.1s, opacity 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 198, 255, 0.3);
+        }
+
+        .btn-map {
+            background: var(--map-btn-bg);
+            color: #bfdbfe;
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-map:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: left;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            line-height: 1.5;
+        }
+        .footer strong { color: #e2e8f0; }
+
+        /* Toast Popup */
+        .toast {
+            position: absolute;
+            top: 20px;
+            background: #fff;
+            color: #0f172a;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transform: translateY(-100px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .grid-row { flex-direction: column; gap: 10px; }
+            .container { padding: 30px 20px; width: 95%; }
+        }
+    </style>
 </head>
 <body>
 
-<h1>Pillow SMP</h1>
+    <div id="toast" class="toast"><i class="fas fa-check"></i> Copied!</div>
 
-<!-- Android intent link -->
-<a class="btn" href="intent://connect?ip=pillow.rzx.world&port=26006#Intent;scheme=minecraft;package=com.mojang.minecraftpe;end">
-  Join Minecraft
-</a>
+    <div class="container">
+        
+        <div class="header">
+            <h1>PILLOW SMP</h1>
+            <div class="badge">Java & Bedrock Ready</div>
+        </div>
 
-<!-- Fallback Minecraft URI link -->
-<a class="btn" href="minecraft://connect?ip=pillow.rzx.world&port=26006">
-  Open Minecraft
-</a>
+        <!-- IP & Port Grid -->
+        <div class="grid-row">
+            <div class="copy-box box-large" onclick="copyText('pillow.rzx.world')">
+                <div class="label">Server IP</div>
+                <div class="value">pillow.rzx.world</div>
+                <div class="hint"><i class="far fa-copy"></i> Click to copy</div>
+            </div>
+            
+            <div class="copy-box box-small" onclick="copyText('26006')">
+                <div class="label">Port</div>
+                <div class="value">26006</div>
+                <div class="hint"><i class="far fa-copy"></i> Copy</div>
+            </div>
+        </div>
 
-<div class="info">
-  If clicking doesn't work, copy the IP and Port:<br>
-  <strong>IP:</strong> pillow.rzx.world <strong>Port:</strong> 26006
-</div>
+        <!-- Action Buttons -->
+        <div class="btn-group">
+            <!-- UPDATED LINK: addExternalServer -->
+            <a href="minecraft://?addExternalServer=PillowSMP|pillow.rzx.world:26006" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Add Server & Open
+            </a>
+            
+            <a href="http://map.rzx.world:26012" target="_blank" class="btn btn-map">
+                <i class="fas fa-map"></i> View World Map
+            </a>
+        </div>
 
+        <!-- Footer -->
+        <div class="footer">
+            <div style="margin-bottom: 8px;">
+                <i class="fab fa-android"></i> <strong>Bedrock:</strong> Click the button above to automatically add the server to your list and open Minecraft.
+            </div>
+            <div>
+                <i class="fas fa-desktop"></i> <strong>Java:</strong> Copy the IP only.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyText(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast();
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                prompt("Copy manually:", text);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
