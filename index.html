@@ -3,8 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pillow SMP</title>
     
+    <!-- ========================================= -->
+    <!--       EMBED & SHARING SETTINGS            -->
+    <!-- ========================================= -->
+    <title>Join Pillow SMP</title>
+    <meta name="description" content="Click here to join Pillow SMP! Official Java & Bedrock IP and World Map.">
+    <meta name="theme-color" content="#00C6FF"> <!-- This makes the Discord embed bar BLUE -->
+
+    <!-- Discord / Facebook / Messenger Embeds -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Join Pillow SMP">
+    <meta property="og:description" content="Java & Bedrock Compatible. Click to copy IP, open Minecraft, or view the World Map.">
+    <meta property="og:url" content="https://pillow.rzx.world">
+    <!-- REPLACE THE LINK BELOW WITH YOUR SERVER LOGO URL FOR A CUSTOM IMAGE -->
+    <meta property="og:image" content="https://assets.gcore.pro/blog_container/2020/08/minecraft-1-1.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Join Pillow SMP">
+    <meta name="twitter:description" content="Java & Bedrock Compatible. Click to join now.">
+    <!-- ========================================= -->
+
     <!-- Modern Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +37,7 @@
         :root {
             --primary-gradient: linear-gradient(135deg, #00C6FF, #0072FF);
             --map-btn-bg: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(15, 23, 42, 0.85); /* Slightly darker for better contrast */
+            --glass-bg: rgba(15, 23, 42, 0.85);
             --border-color: rgba(255, 255, 255, 0.15);
             --text-white: #ffffff;
             --text-gray: #94a3b8;
@@ -37,8 +57,7 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            /* Fixes the "swiping" issue on iPad/Mobile */
-            position: fixed; 
+            position: fixed; /* Locks screen for iPad/Mobile */
             top: 0; left: 0; right: 0; bottom: 0;
             overflow: hidden;
             
@@ -46,10 +65,8 @@
             align-items: center;
             justify-content: center;
 
-            /* FALLBACK COLOR: This fixes the white screen issue */
+            /* Fallback & Gradient Background */
             background-color: #020617; 
-            
-            /* Gradient overlay */
             background-image: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #0f172a 60%, #020617 100%);
             color: var(--text-white);
         }
@@ -58,7 +75,7 @@
             width: 90%;
             max-width: 480px;
             
-            /* Glass Effect */
+            /* Glass Card */
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
